@@ -2,7 +2,6 @@
 # One-shot environment setup for a Vast.ai instance (run from the repo root).
 set -euo pipefail
 
-# Keep the HF cache on the big data disk, not the small container layer.
 export HF_HOME=${HF_HOME:-/workspace/hf}
 mkdir -p "$HF_HOME"
 grep -q "HF_HOME" ~/.bashrc || echo "export HF_HOME=$HF_HOME" >> ~/.bashrc
