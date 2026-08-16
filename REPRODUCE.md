@@ -20,17 +20,13 @@ python3 evaluate.py -p output/core.jsonl -g data/val.jsonl -o output/core-scores
 | `core.yaml` | Qwen3.5-27B | CoRe + rewritten `company` prompt | **0.548** |
 | `core-company-cot.yaml` | Qwen3.5-27B | as above, `company` moved to CoT | 0.546 |
 
-`core.yaml` is the best validation configuration. `core-company-cot.yaml` is
+`core_base.yaml` is the best validation configuration. `core.yaml` is
 the one measured on the test split (0.5408 at a 2000-token CoT budget); the
 token-budget sweep in the paper varies `max_new_tokens` in that file over
 300 / 500 / 2000.
 
-Note that `core.yaml` and `core-company-cot.yaml` differ only in whether
-`companyTradesAtStockExchange` sits in `cot_relations`. Moving it gains 2.1pp
-on that relation but costs 3.0pp on `personHasCityOfDeath`, which shares its
-decoding batch group. This is the batch-composition effect documented in the
-paper, and it is why relation-level scores are only comparable across runs
-that hold batch composition fixed.
+Note that `core_base.yaml` and `core.yaml` differ only in whether
+`companyTradesAtStockExchange` sits in `cot_relations`.
 
 ## Single-relation runs
 
