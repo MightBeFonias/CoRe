@@ -1,0 +1,44 @@
+model: "gemma_baseline"
+llm_path: "google/gemma-4-31B-it"
+prompt_templates_file: "prompt_templates/question_prompts.csv"
+
+# Relations that use rationalized chain-of-thought few-shot. Everything else
+# uses plain direct-answer few-shot. companyTradesAtStockExchange is left on
+# the direct path because it measurably improved without CoT.
+cot_relations:
+  - "awardWonBy"
+  - "countryLandBordersCountry"
+  - "hasArea"
+  - "hasCapacity"
+  - "personHasCityOfDeath"
+
+numeric_relations:
+  - "hasArea"
+  - "hasCapacity"
+
+never_abstain_relations:
+  - "hasArea"
+  - "hasCapacity"
+
+# Default answer budgets.
+max_new_tokens: 300
+direct_max_new_tokens: 64    # direct relations: answer only
+rationale_max_new_tokens: 150
+
+
+# Write every raw generation here so truncation can be diagnosed directly
+# instead of inferred. Comment out to disable.
+raw_generations_path: "output/raw_generations.jsonl"
+
+batch_size: 4
+use_quantization: false
+enable_thinking: false
+few_shot: 5
+# Per-relation exemplar counts (overrides few_shot above). Pool sizes in
+# train.jsonl: awardWonBy 10, countryLandBordersCountry 67, the rest 100 —
+# so k above the pool size just uses the whole pool.
+# few_shot_per_relation:
+#   personHasCityOfDeath: 10
+#   hasCapacity: 10
+seed: 42
+train_data_file: "data/train.jsonl"
